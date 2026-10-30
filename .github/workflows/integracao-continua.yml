@@ -25,3 +25,8 @@ jobs:
 
       - name: Executa testes unitarios
         run: mvn -B verify
+        
+      - name: Análise estática
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=naeffm_vollmed-api
