@@ -32,4 +32,4 @@ jobs:
       - name: Análise estática
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn sonar:sonar -Dsonar.projectKey=naeffm_vollmed-api
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=naeffm_vollmed-api -Dsonar.host.url=https://sonarcloud.io
