@@ -14,7 +14,7 @@ services:
       - vollmed
   
   api:
-    image: vollmed-api_api:latest   
+    image: vollmed-api-api:latest   
     restart: unless-stopped
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/vollmed_api?createDatabaseIfNotExist=true
