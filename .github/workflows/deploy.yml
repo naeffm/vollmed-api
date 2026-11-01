@@ -31,7 +31,7 @@ jobs:
           echo "$PRIVATE_KEY" > deploy_key.pem
           chmod 600 deploy_key.pem
 
-          docker save -o vollmed-api.tar vollmed-api
+          docker save -o vollmed-api.tar vollmed-api-api
 
           scp -o StrictHostKeyChecking=no -i deploy_key.pem vollmed-api.tar $USER@$HOST:/home/ubuntu/
           scp -o StrictHostKeyChecking=no -i deploy_key.pem init.sql $USER@$HOST:/home/ubuntu/
