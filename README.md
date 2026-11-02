@@ -79,12 +79,12 @@ ssh                 → executa o script       ─────→  docker load
 | `backup-aws.sh` | Gera um `.sql` por tabela com `mysqldump`, numa pasta com a data do dia, e envia pro S3 com `aws s3 sync` |
 | `restore-aws.sh <data> <tabela>` | Baixa do S3 o backup daquela data e restaura a tabela no MySQL |
 
-- As credenciais do MySQL ficam num `.my.cnf` com `chmod 600` (veja `scripts/.my.cnf.example`), fora do código.
+- As credenciais do MySQL ficam num `~/.my.cnf` com `chmod 600`, fora do código.
 - O backup usa um usuário MySQL só de leitura, e o acesso ao S3 usa um usuário **IAM** próprio.
 - O agendamento diário é feito com **cron**:
 
 ```cron
-0 2 * * * /home/naeffm/backup-aws.sh vollmed_db >> /home/naeffm/backup.log 2>&1
+0 2 * * * /home/naeffm/vollmed-api/scripts/backup-aws.sh vollmed_db >> /home/naeffm/backup.log 2>&1
 ```
 
 Testado na prática: apaguei a tabela `medicos` e restaurei os 100 registros a partir do backup no S3.
