@@ -17,3 +17,6 @@ else
 fi
 
 docker compose up -d
+
+rm -f vollmed-api.tar
+docker image prune -f
