@@ -64,10 +64,12 @@ scp                 → copia .tar, init.sql,  ─────→  /home/ubuntu
 ssh                 → executa o script       ─────→  docker load
                                                      para os containers antigos
                                                      docker compose up -d
+                                                     apaga o .tar e as imagens antigas
 ```
 
 - A chave SSH da EC2 fica no secret `EC2_PRIVATE_KEY`; o runner recria o arquivo `.pem` com `chmod 600` só durante a execução.
 - O compose de produção usa `image:` em vez de `build:`: o código-fonte não vai pro servidor, só a imagem pronta.
+- O [`Dockerfile`](Dockerfile) usa **multi-stage build**: compila com o JDK e roda só com o `17-jre-alpine`. A imagem da API caiu de ~1,3 GB pra **480 MB**.
 - O **Security Group** libera a porta 22 (SSH) e a 8000 (API). A 3306 (MySQL) fica restrita ao meu IP.
 
 ---
@@ -103,7 +105,7 @@ O material do curso tinha alguns anos, e várias peças tinham mudado. Cada prob
 | `pull access denied for vollmed-api_api` | o Compose v2 nomeia imagens com hífen (`vollmed-api-api`), o curso usava o v1 | mesmo nome no `docker save` e no compose de produção |
 | `Unable to acquire JDBC Connection` | o Linux matava o MySQL por falta de memória (EC2 com 908 MB e sem swap) | swap de 1 GB |
 | Banco exposto na internet | porta 3306 aberta pra `0.0.0.0/0` | Security Group restrito ao meu IP |
-| Disco da EC2 enchendo | cada deploy deixa uma imagem antiga | `docker image prune` |
+| `scp: write remote ... Failure` | disco da EC2 cheio (100%): imagem da API com ~1,3 GB, com o JDK e o build dentro | multi-stage build com `17-jre-alpine` (480 MB) e limpeza automática no fim do deploy |
 | `externally-managed-environment` | o Ubuntu bloqueia `sudo pip install` (PEP 668) | AWS CLI v2 pelo snap oficial |
 
 ---
